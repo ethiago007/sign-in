@@ -29,23 +29,23 @@ const Signup = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Set display name for authentication
+      
       await updateProfile(user, { displayName: username });
 
-      // Store user data in Firestore
+      
       await setDoc(doc(db, "users", user.uid), {
         username,
         email,
       });
 
-      // Send verification email
+      
       await sendEmailVerification(user);
       setMessage("Verification email sent! Please check your inbox.");
 
-      // Redirect to login page after signup
+      
       setTimeout(() => {
         navigate("/login");
-      }, 5000); // Redirect after 5 seconds
+      }, 2000); 
 
     } catch (err) {
       setError(err.message);
@@ -57,7 +57,7 @@ const Signup = () => {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user;
 
-      // Store user in Firestore if it's their first time signing up
+      
       if (userCredential.additionalUserInfo.isNewUser) {
         await setDoc(doc(db, "users", user.uid), {
           username: user.displayName,
@@ -65,12 +65,12 @@ const Signup = () => {
         });
       }
 
-      // Send email verification if needed
+      
       if (!user.emailVerified) {
         await sendEmailVerification(user);
       }
 
-      navigate("/dummy"); // Redirect after successful signup
+      navigate("/dummy"); 
     } catch (err) {
       setError(err.message);
     }

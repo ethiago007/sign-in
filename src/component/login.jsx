@@ -6,33 +6,33 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [identifier, setIdentifier] = useState(""); // Username or Email
+  const [identifier, setIdentifier] = useState(""); 
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [unverified, setUnverified] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-  const isEmail = (input) => /\S+@\S+\.\S+/.test(input); // Check if input is an email
+  const isEmail = (input) => /\S+@\S+\.\S+/.test(input); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
 
-    let email = identifier; // Assume user entered an email
-    let username = ""; // Placeholder for username
+    let email = identifier; 
+    let username = ""; 
 
     if (!isEmail(identifier)) {
-      // If input is not an email, treat it as a username and fetch email
+      
       try {
-        const usersRef = collection(db, "users"); // Firestore collection
+        const usersRef = collection(db, "users"); 
         const q = query(usersRef, where("username", "==", identifier));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          email = querySnapshot.docs[0].data().email; // Get email associated with username
-          username = identifier; // Keep the username
+          email = querySnapshot.docs[0].data().email; 
+          username = identifier; 
         } else {
           setError("Username not found.");
           return;
@@ -53,7 +53,7 @@ const Login = () => {
         return;
       }
 
-      // Get username from Firestore if login was via email
+      
       if (!username) {
         const usersRef = collection(db, "users");
         const q = query(usersRef, where("email", "==", email));
@@ -63,7 +63,7 @@ const Login = () => {
         }
       }
 
-      navigate("/dummy", { state: { username } }); // Pass username to dummy page
+      navigate("/dummy", { state: { username } }); 
     } catch (err) {
       setError("Invalid email, username, or password. Please try again.");
     }
@@ -86,9 +86,9 @@ const Login = () => {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user;
 
-      let username = user.displayName || "User"; // Use Google display name if available
+      let username = user.displayName || "User"; 
 
-      // Fetch username from Firestore if needed
+      
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
@@ -101,7 +101,7 @@ const Login = () => {
         setSuccessMessage("A verification email has been sent to your Google account.");
       }
 
-      navigate("/dummy", { state: { username } }); // Pass username to dummy page
+      navigate("/dummy", { state: { username } }); 
     } catch (err) {
       setError("Google login failed. Try again later.");
     }
