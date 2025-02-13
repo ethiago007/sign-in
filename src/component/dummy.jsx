@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Button, Avatar, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
+import { Typography, Box, Button, Avatar, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Alert } from "@mui/material";
 import { auth } from "../firebase";
-import { signOut, updateProfile, onAuthStateChanged } from "firebase/auth";
+import { signOut, updateProfile, onAuthStateChanged, updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -9,9 +9,13 @@ const DummyPage = () => {
   const [username, setUsername] = useState("");
   const [photoURL, setPhotoURL] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openUsernameDialog, setOpenUsernameDialog] = useState(false);
+  const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
   const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [typingFinished, setTypingFinished] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,7 +46,7 @@ const DummyPage = () => {
 
   const handleChangeUsername = () => {
     setAnchorEl(null);
-    setOpenDialog(true);
+    setOpenUsernameDialog(true);
   };
 
   const handleSaveUsername = async () => {
@@ -50,15 +54,35 @@ const DummyPage = () => {
       if (auth.currentUser && newUsername.trim()) {
         await updateProfile(auth.currentUser, { displayName: newUsername });
         setUsername(newUsername);
+        setSuccess("Username updated successfully!");
       }
-      setOpenDialog(false);
+      setOpenUsernameDialog(false);
     } catch (error) {
-      console.error("Error updating username:", error);
+      setError("Error updating username.");
+    }
+  };
+
+  const handleChangePassword = () => {
+    setAnchorEl(null);
+    setOpenPasswordDialog(true);
+  };
+
+  const handleSavePassword = async () => {
+    try {
+      if (auth.currentUser && newPassword.trim().length >= 6) {
+        await updatePassword(auth.currentUser, newPassword);
+        setSuccess("Password updated successfully!");
+      } else {
+        setError("Password must be at least 6 characters long.");
+      }
+      setOpenPasswordDialog(false);
+    } catch (error) {
+      setError("Error updating password. Please try again.");
     }
   };
 
   const text = `Hiii, ${username || "Mysterious Player"}! 🌚 Congrats! You’ve successfully signed up for Squid Game! 🦑🏆`;
-  
+
   return (
     <Box
       sx={{
@@ -85,9 +109,14 @@ const DummyPage = () => {
         </Avatar>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           <MenuItem onClick={handleChangeUsername}>Change Username</MenuItem>
+          <MenuItem onClick={handleChangePassword}>Change Password</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </Box>
+
+      {/* Error & Success Messages */}
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
       {/* Typing animation using motion.span */}
       <Typography variant="h4" component="div">
@@ -117,18 +146,6 @@ const DummyPage = () => {
           <Typography variant="body1" sx={{ display: "block", marginBottom: 2 }}>
             Welcome to this completely pointless page! 🙃 But hey, at least you made it this far.
           </Typography>
-          <Typography variant="body1" sx={{ display: "block", marginBottom: 1 }}>
-            Also, just a little reminder:
-          </Typography>
-          <Typography variant="body1" sx={{ display: "block" }}>
-            ✨ You’re doing great, even if it doesn’t feel like it.
-          </Typography>
-          <Typography variant="body1" sx={{ display: "block" }}>
-            ✨ If today’s been rough, you’ll pull through—I believe in you!
-          </Typography>
-          <Typography variant="body1" sx={{ display: "block", marginBottom: 3 }}>
-            ✨ And let’s be honest, you’re looking amazing today. (No, seriously.)
-          </Typography>
           <Typography variant="body1" sx={{ display: "block", marginBottom: 3 }}>
             Now make sure you have a nice day ❤️
           </Typography>
@@ -139,7 +156,7 @@ const DummyPage = () => {
       )}
 
       {/* Change Username Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+      <Dialog open={openUsernameDialog} onClose={() => setOpenUsernameDialog(false)}>
         <DialogTitle>Change Username</DialogTitle>
         <DialogContent>
           <TextField
@@ -153,8 +170,31 @@ const DummyPage = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenUsernameDialog(false)}>Cancel</Button>
           <Button onClick={handleSaveUsername} variant="contained" color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Change Password Dialog */}
+      <Dialog open={openPasswordDialog} onClose={() => setOpenPasswordDialog(false)}>
+        <DialogTitle>Change Password</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="New Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenPasswordDialog(false)}>Cancel</Button>
+          <Button onClick={handleSavePassword} variant="contained" color="primary">
             Save
           </Button>
         </DialogActions>

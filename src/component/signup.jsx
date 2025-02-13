@@ -1,45 +1,76 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, Box, Alert, Link } from "@mui/material";
-import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
+import { TextField, Button, Box, Typography, Alert, Link } from "@mui/material";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
+import { db } from "../firebase";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const Signup = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSignUp = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
+    setMessage("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(userCredential.user, { displayName: username });
-      navigate("/dummy"); // Redirect to dummy page
+      const user = userCredential.user;
+
+      // Set display name for authentication
+      await updateProfile(user, { displayName: username });
+
+      // Store user data in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        username,
+        email,
+      });
+
+      // Send verification email
+      await sendEmailVerification(user);
+      setMessage("Verification email sent! Please check your inbox.");
+
+      // Redirect to login page after signup
+      setTimeout(() => {
+        navigate("/login");
+      }, 5000); // Redirect after 5 seconds
+
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const handleGoogleSignUp = async () => {
+  const handleGoogleSignup = async () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
-      let googleUsername = userCredential.user.displayName || ""; // Get Google account name if available
+      const user = userCredential.user;
 
-      // Prompt user to confirm or enter a new username
-      let userEnteredUsername = prompt(
-        `Your Google name is "${googleUsername}". Enter a username you want to use:`,
-        googleUsername
-      );
-
-      if (userEnteredUsername && userEnteredUsername !== googleUsername) {
-        await updateProfile(userCredential.user, { displayName: userEnteredUsername });
+      // Store user in Firestore if it's their first time signing up
+      if (userCredential.additionalUserInfo.isNewUser) {
+        await setDoc(doc(db, "users", user.uid), {
+          username: user.displayName,
+          email: user.email,
+        });
       }
 
-      navigate("/dummy");
+      // Send email verification if needed
+      if (!user.emailVerified) {
+        await sendEmailVerification(user);
+      }
+
+      navigate("/dummy"); // Redirect after successful signup
     } catch (err) {
       setError(err.message);
     }
@@ -61,7 +92,9 @@ const SignUp = () => {
         Sign Up
       </Typography>
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-      <Box component="form" onSubmit={handleSignUp} sx={{ width: "100%", maxWidth: 400 }}>
+      {message && <Alert severity="success" sx={{ mb: 2 }}>{message}</Alert>}
+      
+      <Box component="form" onSubmit={handleSignup} sx={{ width: "100%", maxWidth: 400 }}>
         <TextField
           label="Username"
           fullWidth
@@ -73,7 +106,6 @@ const SignUp = () => {
         />
         <TextField
           label="Email"
-          type="email"
           fullWidth
           required
           variant="outlined"
@@ -91,11 +123,23 @@ const SignUp = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <TextField
+          label="Confirm Password"
+          type="password"
+          fullWidth
+          required
+          variant="outlined"
+          margin="normal"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
           Sign Up
         </Button>
+
         <Button
-          onClick={handleGoogleSignUp}
+          onClick={handleGoogleSignup}
           variant="outlined"
           fullWidth
           sx={{ mt: 2 }}
@@ -104,7 +148,6 @@ const SignUp = () => {
         </Button>
       </Box>
 
-      {/* New "Already have an account? Login" link */}
       <Typography sx={{ mt: 2 }}>
         Already have an account?{" "}
         <Link href="/login" underline="hover" sx={{ cursor: "pointer" }}>
@@ -115,4 +158,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Signup;
