@@ -103,15 +103,21 @@ const Signup = () => {
           margin="normal"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#86B6F6" }, 
-              "&:hover fieldset": { borderColor: "#86B6F6" }, 
-              "&.Mui-focused fieldset": { borderColor: "white" }, 
-            },
-            "& .MuiInputLabel-root": { color: "white" }, 
-            "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6" } 
-          }}
+         sx={{
+    backgroundColor: "transparent", 
+    borderRadius: "4px", 
+    transition: "background-color 0.3s ease-in-out", 
+    "& .MuiOutlinedInput-root": {
+      color: "black", 
+      "& fieldset": { borderColor: "#86B6F6" }, 
+      "&:hover fieldset": { borderColor: "#86B6F6" }, 
+      "&.Mui-focused": {
+        backgroundColor: "white", 
+      },
+    },
+    "& .MuiInputLabel-root": { color: "white" }, 
+    "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6", fontWeight: "bolder" } 
+  }}
         />
         <TextField
           label="Email"
@@ -121,15 +127,21 @@ const Signup = () => {
           margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#86B6F6" }, 
-              "&:hover fieldset": { borderColor: "#86B6F6" }, 
-              "&.Mui-focused fieldset": { borderColor: "white" }, 
-            },
-            "& .MuiInputLabel-root": { color: "white" }, 
-            "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6" } 
-          }}
+         sx={{
+    backgroundColor: "transparent", 
+    borderRadius: "4px", 
+    transition: "background-color 0.3s ease-in-out", 
+    "& .MuiOutlinedInput-root": {
+      color: "black", 
+      "& fieldset": { borderColor: "#86B6F6" }, 
+      "&:hover fieldset": { borderColor: "#86B6F6" }, 
+      "&.Mui-focused": {
+        backgroundColor: "white", 
+      },
+    },
+    "& .MuiInputLabel-root": { color: "white" }, 
+    "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6", fontWeight: "bolder" } 
+  }}
         />
         <TextField
           label="Password"
@@ -140,15 +152,21 @@ const Signup = () => {
           margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#86B6F6" }, 
-              "&:hover fieldset": { borderColor: "#86B6F6" }, 
-              "&.Mui-focused fieldset": { borderColor: "white" }, 
-            },
-            "& .MuiInputLabel-root": { color: "white" }, 
-            "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6" } 
-          }}
+         sx={{
+    backgroundColor: "transparent", 
+    borderRadius: "4px", 
+    transition: "background-color 0.3s ease-in-out", 
+    "& .MuiOutlinedInput-root": {
+      color: "black", 
+      "& fieldset": { borderColor: "#86B6F6" }, 
+      "&:hover fieldset": { borderColor: "#86B6F6" }, 
+      "&.Mui-focused": {
+        backgroundColor: "white", 
+      },
+    },
+    "& .MuiInputLabel-root": { color: "white" }, 
+    "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6", fontWeight: "bolder" } 
+  }}
         />
         <TextField
           label="Confirm Password"
@@ -159,15 +177,21 @@ const Signup = () => {
           margin="normal"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#86B6F6" }, 
-              "&:hover fieldset": { borderColor: "#86B6F6" }, 
-              "&.Mui-focused fieldset": { borderColor: "white" }, 
-            },
-            "& .MuiInputLabel-root": { color: "white" }, 
-            "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6" } 
-          }}
+         sx={{
+    backgroundColor: "transparent", 
+    borderRadius: "4px", 
+    transition: "background-color 0.3s ease-in-out", 
+    "& .MuiOutlinedInput-root": {
+      color: "black", 
+      "& fieldset": { borderColor: "#86B6F6" }, 
+      "&:hover fieldset": { borderColor: "#86B6F6" }, 
+      "&.Mui-focused": {
+        backgroundColor: "white", 
+      },
+    },
+    "& .MuiInputLabel-root": { color: "white" }, 
+    "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6", fontWeight: "bolder" } 
+  }}
         />
 
         <Button type="submit" variant="contained" fullWidth sx={{

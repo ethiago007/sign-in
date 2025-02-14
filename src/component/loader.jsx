@@ -16,7 +16,7 @@ function Preloader() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "black",
+        backgroundColor: "#4F42B5",
         zIndex: 9999,
       }}
     >

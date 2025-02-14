@@ -128,24 +128,32 @@ const Login = () => {
       {successMessage && <Alert severity="success" sx={{ mb: 2 }}>{successMessage}</Alert>}
       
       <Box component="form" onSubmit={handleLogin} sx={{ width: "100%", maxWidth: 400 }}>
-        <TextField
-          label="Username or Email"
-          fullWidth
-          required
-          variant="outlined"
-          margin="normal"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#86B6F6" }, 
-              "&:hover fieldset": { borderColor: "#86B6F6" }, 
-              "&.Mui-focused fieldset": { borderColor: "white" }, 
-            },
-            "& .MuiInputLabel-root": { color: "white" }, 
-            "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6" } 
-          }}
-        />
+      <TextField
+  label="Username or Email"
+  fullWidth
+  required
+  variant="outlined"
+  margin="normal"
+  value={identifier}
+  onChange={(e) => setIdentifier(e.target.value)}
+  sx={{
+    backgroundColor: "transparent", 
+    borderRadius: "4px", 
+    transition: "background-color 0.3s ease-in-out", 
+    "& .MuiOutlinedInput-root": {
+      color: "black", 
+      "& fieldset": { borderColor: "#86B6F6" }, 
+      "&:hover fieldset": { borderColor: "#86B6F6" }, 
+      "&.Mui-focused": {
+        backgroundColor: "white", 
+      },
+    },
+    "& .MuiInputLabel-root": { color: "white" }, 
+    "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6", fontWeight: "bolder" } 
+  }}
+/>
+
+
         <TextField
           label="Password"
           type="password"
@@ -156,13 +164,19 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           sx={{
+            backgroundColor: "transparent", 
+            borderRadius: "4px", 
+            transition: "background-color 0.3s ease-in-out", 
             "& .MuiOutlinedInput-root": {
+              color: "black", 
               "& fieldset": { borderColor: "#86B6F6" }, 
               "&:hover fieldset": { borderColor: "#86B6F6" }, 
-              "&.Mui-focused fieldset": { borderColor: "white" }, 
+              "&.Mui-focused": {
+                backgroundColor: "white", 
+              },
             },
             "& .MuiInputLabel-root": { color: "white" }, 
-            "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6" } 
+            "& .MuiInputLabel-root.Mui-focused": { color: "#86B6F6", fontWeight: "bolder" } 
           }}
         />
         
