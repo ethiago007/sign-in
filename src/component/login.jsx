@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Alert, Link } from "@mui/material";
-import { signInWithEmailAndPassword, sendEmailVerification, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, sendEmailVerification, signInWithPopup, sendPasswordResetEmail  } from "firebase/auth";
 import { auth, googleProvider, db } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -107,6 +107,25 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!identifier) {
+      setError("Please enter your email to reset your password.");
+      return;
+    }
+  
+    if (!isEmail(identifier)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+  
+    try {
+      await sendPasswordResetEmail(auth, identifier);
+      alert("A password reset email has been sent to your email address.");
+    } catch (err) {
+      setError("Error sending password reset email. Please try again.");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -141,11 +160,11 @@ const Login = () => {
     borderRadius: "4px", 
     transition: "background-color 0.3s ease-in-out", 
     "& .MuiOutlinedInput-root": {
-      color: "black", 
+      color: "white", 
       "& fieldset": { borderColor: "#86B6F6" }, 
       "&:hover fieldset": { borderColor: "#86B6F6" }, 
       "&.Mui-focused": {
-        backgroundColor: "white", 
+        backgroundColor: "transparent", 
       },
     },
     "& .MuiInputLabel-root": { color: "white" }, 
@@ -168,11 +187,11 @@ const Login = () => {
             borderRadius: "4px", 
             transition: "background-color 0.3s ease-in-out", 
             "& .MuiOutlinedInput-root": {
-              color: "black", 
+              color: "white", 
               "& fieldset": { borderColor: "#86B6F6" }, 
               "&:hover fieldset": { borderColor: "#86B6F6" }, 
               "&.Mui-focused": {
-                backgroundColor: "white", 
+                backgroundColor: "transparent", 
               },
             },
             "& .MuiInputLabel-root": { color: "white" }, 
@@ -232,10 +251,14 @@ const Login = () => {
       </Box>
 
       <Typography sx={{ mt: 2 }}>
-        <Link href="/forgot-password" underline="hover" sx={{ cursor: "pointer" }}>
-          Forgot Password?
-        </Link>
-      </Typography>
+  <Link
+    onClick={handleForgotPassword} 
+    underline="hover"
+    sx={{ cursor: "pointer" }}
+  >
+    Forgot Password?
+  </Link>
+</Typography>;
 
       <Typography sx={{ mt: 2, color: "white" }}>
         Don't have an account?{" "}

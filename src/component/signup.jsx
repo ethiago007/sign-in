@@ -108,11 +108,11 @@ const Signup = () => {
     borderRadius: "4px", 
     transition: "background-color 0.3s ease-in-out", 
     "& .MuiOutlinedInput-root": {
-      color: "black", 
+      color: "white", 
       "& fieldset": { borderColor: "#86B6F6" }, 
       "&:hover fieldset": { borderColor: "#86B6F6" }, 
       "&.Mui-focused": {
-        backgroundColor: "white", 
+        backgroundColor: "transparent", 
       },
     },
     "& .MuiInputLabel-root": { color: "white" }, 
@@ -132,11 +132,11 @@ const Signup = () => {
     borderRadius: "4px", 
     transition: "background-color 0.3s ease-in-out", 
     "& .MuiOutlinedInput-root": {
-      color: "black", 
+      color: "white", 
       "& fieldset": { borderColor: "#86B6F6" }, 
       "&:hover fieldset": { borderColor: "#86B6F6" }, 
       "&.Mui-focused": {
-        backgroundColor: "white", 
+        backgroundColor: "transparent", 
       },
     },
     "& .MuiInputLabel-root": { color: "white" }, 
@@ -157,11 +157,11 @@ const Signup = () => {
     borderRadius: "4px", 
     transition: "background-color 0.3s ease-in-out", 
     "& .MuiOutlinedInput-root": {
-      color: "black", 
+      color: "white", 
       "& fieldset": { borderColor: "#86B6F6" }, 
       "&:hover fieldset": { borderColor: "#86B6F6" }, 
       "&.Mui-focused": {
-        backgroundColor: "white", 
+        backgroundColor: "transparent", 
       },
     },
     "& .MuiInputLabel-root": { color: "white" }, 
@@ -182,11 +182,11 @@ const Signup = () => {
     borderRadius: "4px", 
     transition: "background-color 0.3s ease-in-out", 
     "& .MuiOutlinedInput-root": {
-      color: "black", 
+      color: "white", 
       "& fieldset": { borderColor: "#86B6F6" }, 
       "&:hover fieldset": { borderColor: "#86B6F6" }, 
       "&.Mui-focused": {
-        backgroundColor: "white", 
+        backgroundColor: "transparent", 
       },
     },
     "& .MuiInputLabel-root": { color: "white" }, 
